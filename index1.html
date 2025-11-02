@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complete SQL Viva Reference</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f7fa;
+      margin: 30px;
+    }
+    h1 { color: #1a237e; }
+    h2 { color: #1976d2; margin-top: 25px; }
+    .section { background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+    pre { background: #222; color: #fff; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    p { margin-top: 0; }
+    code { background: #e0e0e0; padding: 2px 6px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <h1>SQL Viva Reference (Full Solutions)</h1>
+
+  <div class="section">
+    <h2>1. DDL Commands</h2>
+    <p><b>Definition:</b> Data Definition Language manages table structures (CREATE, ALTER, TRUNCATE, DROP, RENAME).</p>
+    <pre>
+CREATE TABLE Student_info (
+  College_Id INT,
+  College_name VARCHAR(30),
+  Branch VARCHAR(10)
+);
+ALTER TABLE Student_info ADD CGPA NUMBER;
+TRUNCATE TABLE Student_info;
+DROP TABLE Student_info;
+RENAME TABLE Student_info TO Student_Details;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>2. DML Operations</h2>
+    <p><b>Definition:</b> Data Manipulation Language works with table contents (SELECT, INSERT, UPDATE, DELETE).</p>
+    <pre>
+SELECT * FROM Student_info;
+INSERT INTO Student_info (College_Id, College_name, Branch, CGPA) VALUES (101, 'ABC College', 'IT', 8.2);
+UPDATE Student_info SET CGPA = 8.5 WHERE College_Id = 101;
+DELETE FROM Student_info WHERE College_Id = 101;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>3. Constraints in SQL</h2>
+    <p><b>Definition:</b> Constraints control validity of table data (NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY, CHECK).</p>
+    <pre>
+CREATE TABLE Users (
+  UserID INT PRIMARY KEY, -- PRIMARY KEY
+  Name VARCHAR(50) NOT NULL, -- NOT NULL
+  Email VARCHAR(100) UNIQUE, -- UNIQUE
+  DeptID INT,
+  Age INT CHECK (Age >= 18), -- CHECK
+  FOREIGN KEY (DeptID) REFERENCES Departments(DeptID) -- FOREIGN KEY
+);
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>4. Operations in SQL</h2>
+    <p><b>Supported Operators:</b> Add, Subtract, Multiply, Divide, Min, Max, Range (BETWEEN).</p>
+    <pre>
+SELECT 10+5 AS Addition;
+SELECT 10-5 AS Subtraction;
+SELECT 10*5 AS Multiplication;
+SELECT 10/5 AS Division;
+SELECT MIN(CGPA) AS Minimum, MAX(CGPA) AS Maximum FROM Student_info;
+SELECT * FROM Student_info WHERE CGPA BETWEEN 6 AND 9;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>5. Joins and Queries</h2>
+    <p><b>Definition:</b> Joins combine rows from tables, queries extract data using SELECT ... WHERE.</p>
+    <pre>
+SELECT s.College_Id, s.College_name, d.Dept_Name
+FROM Student_info s
+INNER JOIN Departments d
+ON s.Branch = d.Dept_Name;
+SELECT * FROM Student_info WHERE CGPA > 7.0;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>6. Views and Triggers</h2>
+    <p><b>Definition:</b> Views are virtual tables; triggers run actions on table events.</p>
+    <pre>
+CREATE VIEW TopStudents AS SELECT Name, CGPA FROM Student_info WHERE CGPA > 7;
+CREATE TRIGGER Check_CGPA
+BEFORE INSERT ON Student_info
+FOR EACH ROW
+BEGIN
+  IF NEW.CGPA < 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CGPA must be positive';
+  END IF;
+END;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>7. DCL: Grant & Revoke</h2>
+    <p><b>Definition:</b> Data Control Language manages database privileges for users.</p>
+    <pre>
+GRANT SELECT, INSERT ON Student_info TO 'user1';
+REVOKE INSERT ON Student_info FROM 'user1';
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>8. TCL: Commit & Rollback</h2>
+    <p><b>Definition:</b> Transaction Control Language ensures consistency for batch operations.</p>
+    <pre>
+START TRANSACTION;
+UPDATE Student_info SET CGPA = 8 WHERE College_Id = 101;
+COMMIT;
+ROLLBACK;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>9. Transaction Control Techniques</h2>
+    <p><b>Usage:</b> START TRANSACTION, SAVEPOINT, COMMIT, ROLLBACK enable safe, stepwise data changes.</p>
+    <pre>
+START TRANSACTION;
+UPDATE Student_info SET CGPA = 9 WHERE College_Id = 102;
+SAVEPOINT SP1;
+UPDATE Student_info SET CGPA = 7 WHERE College_Id = 103;
+ROLLBACK TO SP1;
+COMMIT;
+    </pre>
+  </div>
+</body>
+</html>
